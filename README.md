@@ -1,4 +1,2 @@
-# PyGameUiEngine
-
-- under development
-- gay
+# Gaudy Animation Yeoman
+GAY for short
