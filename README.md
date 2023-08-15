@@ -1,6 +1,8 @@
 # Gaudy Animation Yeoman
 Gaudy Animation Yeoman (GAY for short) is an animation engine made with pygame, that includes features like click-detection, lerp, etc.
+
 _New: Now has vscode snippets_
+
 _New: Now has Graph support_
 
 # Documentation
