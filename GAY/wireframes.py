@@ -1,6 +1,5 @@
 from pygame.draw import line
-from numpy import array
-from operator import add
+from numpy import array, deg2rad, matmul, stack
 
 
 class Wireframe:
@@ -24,7 +23,8 @@ class Wireframe:
     def update(self):
         self.projected_vertices = []
         for vertex in self.vertices:
-            self.projected_vertices.append(self.camera.project(vertex))
+            x, y, z = vertex
+            self.projected_vertices.append(self.camera.project((x + self.x, y + self.y, z + self.z)))
         for edges in self.edges:
             line(
                 self.canvas.canvas,
@@ -33,6 +33,38 @@ class Wireframe:
                 self.projected_vertices[edges[1]],
                 self.line_width,
             )
+
+    def rotate(self, thetaX=0, thetaY=0, thetaZ=0, center=(0,0,0)):
+        self.vertices = list(
+            stack(
+                matmul(
+                    self.camera.rotation_x(deg2rad(thetaX)),
+                    (stack(array(self.vertices) - array(self.vertices.__len__()*[center]), axis=-1)),
+                ),
+                axis=-1,
+            )
+            + array(self.vertices.__len__()*[center])
+        )
+        self.vertices = list(
+            stack(
+                matmul(
+                    self.camera.rotation_y(deg2rad(thetaY)),
+                    (stack(array(self.vertices) - array(self.vertices.__len__()*[center]), axis=-1)),
+                ),
+                axis=-1,
+            )
+            + array(self.vertices.__len__()*[center])
+        )
+        self.vertices = list(
+            stack(
+                matmul(
+                    self.camera.rotation_z(deg2rad(thetaZ)),
+                    (stack(array(self.vertices) - array(self.vertices.__len__()*[center]), axis=-1)),
+                ),
+                axis=-1,
+            )
+            + array(self.vertices.__len__()*[center])
+        )
 
 
 class Cube(Wireframe):
@@ -66,18 +98,6 @@ class Cube(Wireframe):
                         [0, 1, 0],
                     ]
                 ]
-            )
-            + array(
-                [
-                    [self.x, self.y, self.z],
-                    [self.x, self.y, self.z],
-                    [self.x, self.y, self.z],
-                    [self.x, self.y, self.z],
-                    [self.x, self.y, self.z],
-                    [self.x, self.y, self.z],
-                    [self.x, self.y, self.z],
-                    [self.x, self.y, self.z],
-                ]
             ),
             [
                 (0, 1),
@@ -93,6 +113,27 @@ class Cube(Wireframe):
                 (2, 6),
                 (3, 7),
             ],
+        )
+
+    def recalculate(self):
+        self.vertices = array(
+            [
+                [
+                    self.side_length * x,
+                    self.side_length * y,
+                    self.side_length * z,
+                ]
+                for x, y, z in [
+                    [0, 0, 1],
+                    [1, 0, 1],
+                    [1, 0, 0],
+                    [0, 0, 0],
+                    [0, 1, 1],
+                    [1, 1, 1],
+                    [1, 1, 0],
+                    [0, 1, 0],
+                ]
+            ]
         )
 
 
@@ -119,16 +160,8 @@ class Pyramid(Wireframe):
                     [2 * self.side_length, 1 * self.side_length, 2 * self.side_length],
                     [1 * self.side_length, 2 * -self.height, 1 * self.side_length],
                 ]
-            ) / 2
-            + array(
-                [
-                    [self.x, self.y + self.height, self.z],
-                    [self.x, self.y + self.height, self.z],
-                    [self.x, self.y + self.height, self.z],
-                    [self.x, self.y + self.height, self.z],
-                    [self.x, self.y + self.height, self.z],
-                ]
-            ),
+            )
+            / 2,
             [
                 (0, 1),
                 (1, 2),
@@ -140,3 +173,14 @@ class Pyramid(Wireframe):
                 (3, 4),
             ],
         )
+
+    def recalculate(self):
+        self.vertices = array(
+            [
+                [0 * self.side_length, 1 * self.side_length, 2 * self.side_length],
+                [0 * self.side_length, 1 * self.side_length, 0 * self.side_length],
+                [2 * self.side_length, 1 * self.side_length, 0 * self.side_length],
+                [2 * self.side_length, 1 * self.side_length, 2 * self.side_length],
+                [1 * self.side_length, 2 * -self.height, 1 * self.side_length],
+            ]
+        ) / 2

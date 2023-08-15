@@ -1,8 +1,12 @@
 # Gaudy Animation Yeoman
 Gaudy Animation Yeoman (GAY for short) is an animation engine made with pygame, that includes features like click-detection, lerp, etc.
 _New: Now has vscode snippets_
+_New: Now has Graph support_
 
 # Documentation
+## Installation
+The library works locally on windows machines too, but for easy global installation on gnu/linux or bsd machines, run `cp -r GAY $HOME/.local/lib/python3.11/site-packages`
+
 _demo.py should clear everything up_
 
 ## Boilerplate
@@ -136,6 +140,33 @@ window.animation_list = [
         ],
     ]
 ]
+
+window.run()
+```
+
+### Graph [NEW]
+```py
+from GAY.window import Window
+from GAY.button import Button
+from GAY.shapes import Rectangle, Circle
+from GAY.maths import Graph, math
+from GAY.animate import Animate
+from functools import partial as bind_function
+
+animate = Animate()
+window = Window(geometry=(800, 600))
+graph = Graph(window, resolution=0.1, graph=lambda x: 0)
+
+def animate_rotating_slope(t):
+    graph.fn = lambda x: x * math.tan(
+        animate.lerp(
+            0,
+            math.pi,
+            animate.ease_in_out(t),
+        )
+    )
+
+window.animation_list = [[[animate_rotating_slope, "+"]]]
 
 window.run()
 ```

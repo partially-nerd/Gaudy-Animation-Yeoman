@@ -17,6 +17,7 @@ class Window:
 
     def __init__(self, geometry: tuple[int], background_color: str = "#1a1a1a") -> None:
         initialize_pygame()
+        self.w, self.h = geometry
         self.font = Font(file="GAY/font.otf", size=20)
         self.canvas = set_mode(geometry)
         self.clock = Clock()
