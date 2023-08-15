@@ -7,7 +7,8 @@ _New: Now has Graph support_
 
 # Documentation
 ## Installation
-The library works locally on windows machines too, but for easy global installation on gnu/linux or bsd machines, run `cp -r GAY $HOME/.local/lib/python3.11/site-packages`
+Global installation on gnu/linux or bsd machines: `cp -r GAY $HOME/.local/lib/python3.11/site-packages`
+Global installation on windows machines: `xcopy .\GAY %LOCALAPPDATA%\Programs\Python\Python311\Lib\site-packages /e /k /h /i`
 
 _demo.py should clear everything up_
 
