@@ -1,14 +1,16 @@
 # Gaudy Animation Yeoman
 Gaudy Animation Yeoman (GAY for short) is an animation engine made with pygame, that includes features like click-detection, lerp, etc.
-
 _New: Now has vscode snippets_
-
 _New: Now has Graph support_
 
 # Documentation
 ## Installation
-Global installation on gnu/linux or bsd machines: `cp -r GAY $HOME/.local/lib/python3.11/site-packages`
-Global installation on windows machines: `xcopy .\GAY %LOCALAPPDATA%\Programs\Python\Python311\Lib\site-packages /e /k /h /i`
+The library works locally on windows machines too, but for easy global installation on gnu/linux or bsd machines, run `cp -r GAY $HOME/.local/lib/python3.11/site-packages`
+
+#### Dependencies
+- Python3
+- pygame
+- ffmpeg-python
 
 _demo.py should clear everything up_
 

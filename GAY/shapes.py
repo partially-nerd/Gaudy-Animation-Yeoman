@@ -1,4 +1,6 @@
 from pygame.draw import rect, circle, arc, polygon, line
+from pygame import Rect, Surface
+from pygame import SRCALPHA
 
 
 class Rectangle:
@@ -11,6 +13,8 @@ class Rectangle:
         border_radius: int = 4,
         border_width: int = 2,
         border_color: str = "#eb4034",
+        alpha: int = 255,
+        visible: bool = True
     ):
         self.canvas = canvas
         self.canvas.elements.append(self)
@@ -20,21 +24,37 @@ class Rectangle:
         self.border_radius = border_radius
         self.bw = border_width
         self.br_color = border_color
+        self.alpha = alpha
+        self.visible = visible
 
     def update(self):
-        self.rect = rect(
-            self.canvas.canvas,
-            self.background_color,
-            (self.x, self.y, self.w, self.h),
-            border_radius=self.border_radius,
-        )
+        if not self.visible: self.alpha = 0; return
+
+        rect_ = self.x, self.y, self.x + self.w, self.y + self.h
+        surface = Surface(Rect(rect_).size, SRCALPHA)
         rect(
-            self.canvas.canvas,
+            surface,
             self.br_color,
-            (self.x, self.y, self.w, self.h),
+            surface.get_rect(),
             border_radius=self.border_radius,
-            width=self.bw,
         )
+        surface.set_alpha(self.alpha)
+        self.canvas.canvas.blit(surface, rect_)
+        rect_ = (
+            self.x + self.bw,
+            self.y + self.bw,
+            self.x + self.w - self.bw * 2,
+            self.y + self.h - self.bw * 2,
+        )
+        surface = Surface(Rect(rect_).size, SRCALPHA)
+        rect(
+            surface,
+            self.background_color,
+            surface.get_rect(),
+            border_radius=self.border_radius,
+        )
+        surface.set_alpha(self.alpha)
+        self.canvas.canvas.blit(surface, rect_)
 
 
 class Circle:
@@ -47,6 +67,8 @@ class Circle:
         border_radius: int = 4,
         border_width: int = 2,
         border_color: str = "#eb4034",
+        alpha: int = 255,
+        visible: bool = True
     ):
         self.canvas = canvas
         self.canvas.elements.append(self)
@@ -56,18 +78,21 @@ class Circle:
         self.border_radius = border_radius
         self.bw = border_width
         self.br_color = border_color
+        self.alpha = alpha
+        self.visible = visible
 
     def update(self):
-        self.object = circle(
-            self.canvas.canvas,
-            self.background_color,
-            (self.x + self.r, self.y + self.r),
-            self.r,
-        )
-        circle(
-            self.canvas.canvas,
-            self.br_color,
-            (self.x + self.r, self.y + self.r),
-            self.r,
-            width=self.bw,
-        )
+        if not self.visible: self.alpha = 0; return
+
+        center = self.x + self.r, self.y + self.r
+        target_rect = Rect(center, (0, 0)).inflate((self.r * 2, self.r * 2))
+
+        shape_surf = Surface(target_rect.size, SRCALPHA)
+        circle(shape_surf, self.br_color, (self.r, self.r), self.r)
+        shape_surf.set_alpha(self.alpha)
+        self.canvas.canvas.blit(shape_surf, target_rect)
+
+        shape_surf = Surface(target_rect.size, SRCALPHA)
+        circle(shape_surf, self.background_color, (self.r, self.r), self.r - self.bw)
+        shape_surf.set_alpha(self.alpha)
+        self.canvas.canvas.blit(shape_surf, target_rect)
