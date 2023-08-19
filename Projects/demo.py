@@ -3,6 +3,7 @@ from GAY.window import Window
 from GAY.button import Button
 from GAY.shapes import Rectangle, Circle
 from GAY.maths import Graph, math
+from GAY.camera import Camera
 from GAY.shapes import line
 from GAY.animate import Animate
 from functools import partial as bind_function
@@ -14,6 +15,7 @@ window = Window(
     font="Projects/font.otf",
     record="Projects/demo",
 )
+camera = Camera(window)
 
 rect = Rectangle(window)
 circle = Circle(window, (200, 200), visible=False)

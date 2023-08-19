@@ -73,7 +73,7 @@ class Cube(Wireframe):
         canvas,
         camera,
         side_length: int = 100,
-        position: tuple[int] = (100, 100, 0),
+        position: tuple[int] = (0, 0, 0),
     ) -> None:
         self.side_length = side_length
         self.x, self.y, self.z = position
@@ -88,14 +88,14 @@ class Cube(Wireframe):
                         self.side_length * z,
                     ]
                     for x, y, z in [
-                        [0, 0, 1],
-                        [1, 0, 1],
-                        [1, 0, 0],
-                        [0, 0, 0],
-                        [0, 1, 1],
+                        [-1, -1, 1],
+                        [1, -1, 1],
+                        [1, -1, -1],
+                        [-1, -1, -1],
+                        [-1, 1, 1],
                         [1, 1, 1],
-                        [1, 1, 0],
-                        [0, 1, 0],
+                        [1, 1, -1],
+                        [-1, 1, -1],
                     ]
                 ]
             ),
@@ -124,14 +124,14 @@ class Cube(Wireframe):
                     self.side_length * z,
                 ]
                 for x, y, z in [
-                    [0, 0, 1],
-                    [1, 0, 1],
-                    [1, 0, 0],
-                    [0, 0, 0],
-                    [0, 1, 1],
+                    [-1, -1, 1],
+                    [1, -1, 1],
+                    [1, -1, -1],
+                    [-1, -1, -1],
+                    [-1, 1, 1],
                     [1, 1, 1],
-                    [1, 1, 0],
-                    [0, 1, 0],
+                    [1, 1, -1],
+                    [-1, 1, -1],
                 ]
             ]
         )
@@ -143,8 +143,8 @@ class Pyramid(Wireframe):
         canvas,
         camera,
         side_length: int = 100,
-        height: int = 200,
-        position: tuple[int] = (100, 100, 0),
+        height: int = 400,
+        position: tuple[int] = (0, 0, 0),
     ) -> None:
         self.side_length = side_length
         self.height = height
@@ -154,11 +154,11 @@ class Pyramid(Wireframe):
             camera,
             array(
                 [
-                    [0 * self.side_length, 1 * self.side_length, 2 * self.side_length],
-                    [0 * self.side_length, 1 * self.side_length, 0 * self.side_length],
-                    [2 * self.side_length, 1 * self.side_length, 0 * self.side_length],
-                    [2 * self.side_length, 1 * self.side_length, 2 * self.side_length],
-                    [1 * self.side_length, 2 * -self.height, 1 * self.side_length],
+                    [-1 * self.side_length, 0 * self.side_length, 1 * self.side_length],
+                    [-1 * self.side_length, 0 * self.side_length, -1 * self.side_length],
+                    [1 * self.side_length, 0 * self.side_length, -1 * self.side_length],
+                    [1 * self.side_length, 0 * self.side_length, 1 * self.side_length],
+                    [0 * self.side_length, 1 * -self.height, 0 * self.side_length],
                 ]
             )
             / 2,
@@ -177,9 +177,9 @@ class Pyramid(Wireframe):
     def recalculate(self):
         self.vertices = array(
             [
-                [0 * self.side_length, 1 * self.side_length, 2 * self.side_length],
-                [0 * self.side_length, 1 * self.side_length, 0 * self.side_length],
-                [2 * self.side_length, 1 * self.side_length, 0 * self.side_length],
+                [-1 * self.side_length, 1 * self.side_length, 2 * self.side_length],
+                [-1 * self.side_length, 1 * self.side_length, -1 * self.side_length],
+                [2 * self.side_length, 1 * self.side_length, -1 * self.side_length],
                 [2 * self.side_length, 1 * self.side_length, 2 * self.side_length],
                 [1 * self.side_length, 2 * -self.height, 1 * self.side_length],
             ]

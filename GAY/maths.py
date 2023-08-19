@@ -17,7 +17,7 @@ class Graph:
         resolution: int = 0.5,
         alpha: int = 255,
         center: bool = True,
-        visible: bool = True
+        visible: bool = True,
     ) -> None:
         self.canvas = canvas
         self.canvas.elements.append(self)
@@ -33,7 +33,9 @@ class Graph:
         self.visible = visible
 
     def update(self):
-        if not self.visible: self.alpha = 0; return
+        if not self.visible:
+            self.alpha = 0
+            return
 
         if not self.center:
             rect_ = (
