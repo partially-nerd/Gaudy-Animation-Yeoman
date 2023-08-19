@@ -16,6 +16,7 @@ class Graph:
         range_: tuple = (-10, 10),
         resolution: int = 0.5,
         alpha: int = 255,
+        center: bool = True,
         visible: bool = True
     ) -> None:
         self.canvas = canvas
@@ -28,12 +29,27 @@ class Graph:
         self.l_limit, self.u_limit = range_
         self.res = resolution
         self.alpha = alpha
+        self.center = center
         self.visible = visible
 
     def update(self):
         if not self.visible: self.alpha = 0; return
 
-        rect_ = self.x, self.y, self.x + self.h, self.y + self.h
+        if not self.center:
+            rect_ = (
+                self.x,
+                self.y,
+                self.h,
+                self.h,
+            )
+        else:
+            rect_ = (
+                (self.canvas.w + self.x - self.h) / 2,
+                (self.canvas.h + self.y - self.h) / 2,
+                self.h,
+                self.h,
+            )
+
         surface = Surface(Rect(rect_).size, SRCALPHA)
         c = self.h / 2
         self.x_axis = line(

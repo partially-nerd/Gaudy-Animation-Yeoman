@@ -14,6 +14,9 @@ class Button(Rectangle):
         text_color: str = "#ffffff",
         border_radius: int = 4,
         border_width: int = 2,
+        alpha: int = 255,
+        center: bool = True,
+        visible: bool = True,
         border_color: str = "#6290a6",
     ):
         super().__init__(
@@ -24,6 +27,9 @@ class Button(Rectangle):
             border_radius,
             border_width,
             border_color,
+            alpha,
+            center,
+            visible
         )
         self.text = text
         self.text_color = text_color

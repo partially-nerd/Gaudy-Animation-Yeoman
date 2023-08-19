@@ -14,7 +14,8 @@ class Rectangle:
         border_width: int = 2,
         border_color: str = "#eb4034",
         alpha: int = 255,
-        visible: bool = True
+        center: bool = True,
+        visible: bool = True,
     ):
         self.canvas = canvas
         self.canvas.elements.append(self)
@@ -25,12 +26,27 @@ class Rectangle:
         self.bw = border_width
         self.br_color = border_color
         self.alpha = alpha
+        self.center = center
         self.visible = visible
 
     def update(self):
-        if not self.visible: self.alpha = 0; return
-
-        rect_ = self.x, self.y, self.x + self.w, self.y + self.h
+        if not self.visible:
+            self.alpha = 0
+            return
+        if not self.center:
+            rect_ = (
+                self.x,
+                self.y,
+                self.w,
+                self.h,
+            )
+        else:
+            rect_ = (
+                (self.canvas.w + self.x - self.w) / 2,
+                (self.canvas.h + self.y - self.h) / 2,
+                self.w,
+                self.h,
+            )
         surface = Surface(Rect(rect_).size, SRCALPHA)
         rect(
             surface,
@@ -40,12 +56,20 @@ class Rectangle:
         )
         surface.set_alpha(self.alpha)
         self.canvas.canvas.blit(surface, rect_)
-        rect_ = (
-            self.x + self.bw,
-            self.y + self.bw,
-            self.x + self.w - self.bw * 2,
-            self.y + self.h - self.bw * 2,
-        )
+        if not self.center:
+            rect_ = (
+                self.x + self.bw,
+                self.y + self.bw,
+                self.w - 2 * self.bw,
+                self.h - 2 * self.bw,
+            )
+        else:
+            rect_ = (
+                (self.canvas.w + self.x - self.w) / 2 + self.bw,
+                (self.canvas.h + self.y - self.h) / 2 + self.bw,
+                self.w - 2 * self.bw,
+                self.h - 2 * self.bw,
+            )
         surface = Surface(Rect(rect_).size, SRCALPHA)
         rect(
             surface,
@@ -68,7 +92,8 @@ class Circle:
         border_width: int = 2,
         border_color: str = "#eb4034",
         alpha: int = 255,
-        visible: bool = True
+        center: bool = True,
+        visible: bool = True,
     ):
         self.canvas = canvas
         self.canvas.elements.append(self)
@@ -79,12 +104,19 @@ class Circle:
         self.bw = border_width
         self.br_color = border_color
         self.alpha = alpha
+        self.center = center
         self.visible = visible
 
     def update(self):
-        if not self.visible: self.alpha = 0; return
+        if not self.visible:
+            self.alpha = 0
+            return
 
-        center = self.x + self.r, self.y + self.r
+        if not self.center:
+            center = self.x, self.y
+        else:
+            center = (self.canvas.w + self.x) / 2, (self.canvas.h + self.y) / 2
+
         target_rect = Rect(center, (0, 0)).inflate((self.r * 2, self.r * 2))
 
         shape_surf = Surface(target_rect.size, SRCALPHA)
