@@ -4,6 +4,7 @@ _New: Now has vscode snippets_
 _New: Now has Graph support_
 
 Example:
+
 https://github.com/partially-nerd/Gaudy-Animation-Yeoman/assets/108736691/b29aed62-5aa6-4c9f-a86a-cb18c0e41eca
 
 Code that generated it:
