@@ -14,7 +14,8 @@ https://github.com/partially-nerd/Gaudy-Animation-Yeoman/assets/108736691/770c48
 
 
 ## Code for Demo
-```pyfrom GAY.window import Window
+```py
+from GAY.window import Window
 from GAY.maths import Graph, math
 from GAY.button import Button, Slider
 from GAY.shapes import Rectangle, Circle
