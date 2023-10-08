@@ -7,6 +7,12 @@ Gaudy Animation Yeoman (GAY for short) is an animation engine made with pygame, 
 - _New: Now has new timing functions - hasteIn, hasteOut, hasteInOut_
 - _New: Now has vscode snippets_
 
+# Demo
+
+https://github.com/partially-nerd/Gaudy-Animation-Yeoman/assets/108736691/e7923c38-2369-4b58-9cb1-4c61a8378be3
+
+_Generated from the main:/Projects/quadratic_equations file_
+
 # Documentation
 ## Installation
 The library works locally on windows machines too, but for easy global installation on gnu/linux or bsd machines, run `cp -r GAY $HOME/.local/lib/python3.11/site-packages`
