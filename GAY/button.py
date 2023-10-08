@@ -29,7 +29,7 @@ class Button(Rectangle):
             border_color,
             alpha,
             center,
-            visible
+            visible,
         )
         self.text = text
         self.text_color = text_color
@@ -38,7 +38,12 @@ class Button(Rectangle):
         self.label = Label(
             self.canvas,
             self.text,
-            (self.x + self.w / 2, self.y + self.h / 2),
+            (
+                (self.canvas.w + self.x) / 2,
+                (self.canvas.h + self.y) / 2,
+            )
+            if center
+            else (self.x + self.w / 2, self.y + self.h / 2),
             self.text_color,
             self.background_color,
         )
@@ -52,3 +57,45 @@ class Button(Rectangle):
             and self.y <= mouse[1] <= self.h + self.y
         ):
             self.onclick()
+
+
+class Slider:
+    def __init__(
+        self,
+        canvas,
+        position: tuple[int] = (0, 550),
+        slider_width: int = 200,
+        max_value: float = 100,
+    ) -> None:
+        self.max_value = max_value
+        self.slider_container = Rectangle(
+            canvas,
+            position,
+            geometry=(slider_width, 10),
+            background_color="#0e0e0e",
+        )
+        self.slider_label = Button(
+            canvas,
+            "",
+            position=(
+                self.slider_container.x - self.slider_container.w - 120,
+                self.slider_container.y,
+            ),
+            background_color="#1a1a1a",
+            border_width=0,
+        )
+        self.slider_child = Rectangle(
+            canvas,
+            (self.slider_container.x, self.slider_container.y),
+            geometry=(20, 10),
+            background_color="#e8502e",
+            border_width=0,
+        )
+
+    def set_slider(
+        self,
+        property: str = "",
+        value: float = 30,
+    ):
+        self.slider_child.x = value / self.max_value * self.slider_container.w
+        self.slider_label.label.text = f"{property} = {round(value, 2)}"

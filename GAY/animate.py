@@ -4,14 +4,19 @@ class Animate:
         self.ease_in = lambda T: T**2
         self.ease_out = lambda T: 1 - (1 - T) ** 2
         self.ease_in_out = lambda T: self.lerp(self.ease_in(T), self.ease_out(T), T)
+        self.haste_in = lambda T: T ** (1 / 3)
+        self.haste_out = lambda T: T**2
+        self.haste_in_out = lambda T: self.lerp(self.haste_in(T), self.haste_out(T), T)
 
     def delay_one_second(self, t):
         return
 
     def do_once(self, function):
         def animation(t):
-            if t != 0: return
+            if t != 0:
+                return
             function()
+
         return animation
 
     def move_to_x(self, object, x):

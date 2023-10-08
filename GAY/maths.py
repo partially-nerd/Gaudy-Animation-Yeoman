@@ -1,5 +1,7 @@
 from pygame.draw import line
 from pygame import Rect, Surface
+from .label import Label
+from .shapes import Circle
 from pygame import SRCALPHA
 import math
 
@@ -18,6 +20,7 @@ class Graph:
         alpha: int = 255,
         center: bool = True,
         visible: bool = True,
+        caption: str = "",
     ) -> None:
         self.canvas = canvas
         self.canvas.elements.append(self)
@@ -31,6 +34,16 @@ class Graph:
         self.alpha = alpha
         self.center = center
         self.visible = visible
+
+        self.caption = Label(
+            self.canvas,
+            caption,
+            position=(
+                (self.canvas.w + self.x) / 2,
+                (self.canvas.h - self.h - 30) / 2,
+            ),
+            background_color=self.canvas.background_color,
+        )
 
     def update(self):
         if not self.visible:
@@ -72,6 +85,7 @@ class Graph:
         cy = self.y + c
         while self.l_limit <= x1 <= self.u_limit:
             x2 = x1 + self.res
+
             line(
                 surface,
                 self.color,

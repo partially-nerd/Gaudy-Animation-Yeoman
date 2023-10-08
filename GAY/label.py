@@ -11,7 +11,7 @@ class Label:
         self.canvas.elements.append(self)
         self.text_color = text_color
         self.text = text
-        self.position = position
+        self.x, self.y = position
         self.background_color = background_color
 
     def update(self):
@@ -19,5 +19,6 @@ class Label:
             self.text, self.text_color, self.background_color
         )
         text_rect = text[1]
-        text_rect.center = self.position
+
+        text_rect.center = self.x, self.y
         self.canvas.canvas.blit(text[0], text_rect)

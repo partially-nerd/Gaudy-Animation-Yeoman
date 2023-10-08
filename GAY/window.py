@@ -34,18 +34,12 @@ class Window:
         if self.record is not None:
             mkdir(f"{self.record}.out")
             self.t = 0
-        while self.running:
+        while self.running == True:
             for event in get_events():
                 if event.type == QUIT:
                     self.running = False
-                    if self.record is not None:
-                        ffmpeg.input(
-                            f"{self.record}.out/*.jpeg",
-                            pattern_type="glob",
-                            framerate=self.fps,
-                        ).output(f"{self.record}.mp4").run()
-                        rmtree(f"{self.record}.out")
-                        quit()
+                    self.save_recording()
+                    quit()
                 elif event.type == MOUSEBUTTONDOWN:
                     mouse = get_pos()
                     for btn in self.btns:
@@ -58,18 +52,45 @@ class Window:
             if self.record is not None:
                 save(self.canvas, f"{self.record}.out/{str(self.t).rjust(5, '0')}.jpeg")
                 self.t += 1
+        self.save_recording()
         quit()
+
+    def save_recording(self):
+        if self.record is not None:
+            ffmpeg.input(
+                f"{self.record}.out/*.jpeg",
+                pattern_type="glob",
+                framerate=self.fps
+            ).output(f"{self.record}.mp4", **{'b:v': "1024k"}).run()
+            rmtree(f"{self.record}.out")
+
+    def quit(self):
+        self.running = False
+
+    def play(self, *args, duration: float = None):
+        args = list(args)
+        for index, arg in enumerate(args):
+            if not isinstance(arg, list): args[index] = [arg]
+        if duration is not None:
+            if len(args[-1]) == 1: args[-1].append(1)
+            args[-1].append(duration)
+        self.animation_list.append(args)
+        return self
 
     def animate(self):
         if self.animation_list.__len__() == 0:
             return
         direction = None
         for animation in self.animation_list[0]:
+            function = animation[0]
             try:
-                function, direction = animation
+                direction = animation[1]
             except:
-                function = animation[0]
                 direction = 1
+            try:
+                duration = animation[2]
+            except:
+                duration = 1
             if direction == 1:
                 if self.t_positive >= 1:
                     self.t_positive = 0
@@ -84,8 +105,8 @@ class Window:
                     self.animation_list.pop(0)
                     return
                 function(self.t_negative)
-        self.t_negative -= 1 / self.fps
-        self.t_positive += 1 / self.fps
+        self.t_negative -= 1 / (duration * self.fps)
+        self.t_positive += 1 / (duration * self.fps)
 
     def update(self):
         for item in self.elements:
